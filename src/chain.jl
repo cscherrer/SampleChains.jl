@@ -1,58 +1,62 @@
 
-export Chain
-@concrete terse struct Chain{T} <: AbstractVector{T}
-    value
-    meta
-    globals
-end
+export AbstractChain
 
-function Chain(data::AbstractVector{T}, meta::AbstractVector, globals) where {T}
-    @assert size(data) == size(meta)
-    return Chain{T}(data,meta,globals)
-end
+abstract type AbstractChain{T} <: AbstractVector{T} end
 
-value(ch::Chain) = getfield(ch, :value)
-meta(ch::Chain) = getfield(ch, :meta)
-globals(ch::Chain) = getfield(ch, :globals)
+function logweights(::AbstractChain) end
+function pushsample!(::AbstractChain, sample) end
 
-Base.size(ch::Chain) = size(value(ch))
-
-Base.length(ch::Chain) = length(value(ch))
-
-Base.getindex(ch::Chain, n) = getindex(value(ch), n)
-
-# struct MultiChain{T}
-#     chains::AbstractArray{Chain{T}}
+# @concrete terse struct Chain{T} <: AbstractVector{T}
+#     samples     # :: AbstractVector{T}
+#     logweights  # For importance sampling, etc
+#     logp        # log-density for distribution the sample was drawn from
+#     meta        # Per-sample metadata, type depends on sampler used
+#     globals     # Metadata associated with the sample as a whole
+#     iter        # The sampling iterator, can be used to draw additional samples
 # end
 
-Base.propertynames(ch::Chain) = propertynames(value(ch))
+samples(ch::AbstractChain) = getfield(ch, :samples)
+meta(ch::AbstractChain) = getfield(ch, :meta)
+globals(ch::AbstractChain) = getfield(ch, :globals)
+logp(ch::AbstractChain) = getfield(ch, :logp)
+logweights(chain::AbstractChain) = mappedarray(_ -> 0.0, logp(chain))
+
+Base.size(ch::AbstractChain) = size(samples(ch))
+
+Base.length(ch::AbstractChain) = length(samples(ch))
+
+Base.getindex(ch::AbstractChain, n) = getindex(samples(ch), n)
+
+
+
+Base.propertynames(ch::AbstractChain) = propertynames(samples(ch))
 
 # TODO: Make this pass @code_warntype
-Base.getproperty(ch::Chain, k::Symbol) = getproperty(ch, k)
+Base.getproperty(ch::AbstractChain, k::Symbol) = getproperty(samples(ch), k)
 
-# function Base.showarg(io::IO, ch::Chain{T}, toplevel) where T
+# function Base.showarg(io::IO, ch::AbstractChain{T}, toplevel) where T
 #     io = IOContext(io, :compact => true)
 #     print(io, "Chain")
 #     toplevel && println(io, " with schema ", schema(T))
 # end
 
-function Base.show(io::IO, ::MIME"text/plain", ch::Chain)
+function Base.show(io::IO, ::MIME"text/plain", ch::AbstractChain)
     print(io, summarize(ch))
 end
 
 
-function Base.showarg(io::IO, tv::Chain{T}, toplevel) where T
+function Base.showarg(io::IO, tv::AbstractChain{T}, toplevel) where T
     io = IOContext(io, :compact => true)
     print(io, "Chain")
     toplevel && println(io, " with schema ", schema(T))
 end
 
-function Base.show(io::IO, ::MIME"text/plain", tv::Chain)
+function Base.show(io::IO, ::MIME"text/plain", tv::AbstractChain)
     summary(io, tv)
     print(io, summarize(tv))
 end
 
-# function Base.setindex!(a::Chain{T,X}, x::T, j::Int) where {T,X}
+# function Base.setindex!(a::AbstractChain{T,X}, x::T, j::Int) where {T,X}
 #     a1 = flatten(unwrap(a))
 #     x1 = flatten(x)
 
@@ -67,7 +71,7 @@ end
 
 
 
-# leaf_setter(ch::Chain) = Chain ∘ leaf_setter(unwrap(ch))
+# leaf_setter(ch::AbstractChain) = Chain ∘ leaf_setter(unwrap(ch))
 
 # function Chain{T}(::UndefInitializer) where {T}
 #     return EmptyChain{T}()
@@ -93,7 +97,7 @@ end
 #     Chain{T,X}(data)
 # end
 
-function Base.resize!(ch::Chain, n::Int)
-    resize!(value(ch), n)
+function Base.resize!(ch::AbstractChain, n::Int)
+    resize!(samples(ch), n)
     resize!(meta(ch), n)
 end
