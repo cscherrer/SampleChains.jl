@@ -1,7 +1,6 @@
 module SampleChains
 
 using NestedTuples
-using ConcreteStructs
 import Base
 
 
