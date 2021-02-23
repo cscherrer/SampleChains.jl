@@ -40,20 +40,15 @@ Base.getproperty(ch::AbstractChain, k::Symbol) = getproperty(samples(ch), k)
 #     toplevel && println(io, " with schema ", schema(T))
 # end
 
-function Base.show(io::IO, ::MIME"text/plain", ch::AbstractChain)
-    print(io, summarize(ch))
-end
-
-
-function Base.showarg(io::IO, tv::AbstractChain{T}, toplevel) where T
+function Base.showarg(io::IO, chain::AbstractChain{T}, toplevel) where T
     io = IOContext(io, :compact => true)
     print(io, "Chain")
     toplevel && println(io, " with schema ", schema(T))
 end
 
-function Base.show(io::IO, ::MIME"text/plain", tv::AbstractChain)
-    summary(io, tv)
-    print(io, summarize(tv))
+function Base.show(io::IO, ::MIME"text/plain", chain::AbstractChain)
+    summary(io, chain)
+    print(io, summarize(chain))
 end
 
 # function Base.setindex!(a::AbstractChain{T,X}, x::T, j::Int) where {T,X}
