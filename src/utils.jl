@@ -20,3 +20,19 @@ function expect(x)
     neff = effective_sample_size(x)
     return μ ± (σ / √neff)
 end
+
+export @cleanbreak
+
+macro cleanbreak(ex)
+    quote
+        try
+            $(esc(ex))
+        catch e
+            if e isa InterruptException
+                @warn "Computation interrupted"
+            else
+                rethrow()
+            end    
+        end
+    end 
+end
