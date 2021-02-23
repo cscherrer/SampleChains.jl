@@ -3,8 +3,14 @@ export AbstractChain
 
 abstract type AbstractChain{T} <: AbstractVector{T} end
 
+function vectorfields(::AbstractChain) end
 function logweights(::AbstractChain) end
 function pushsample!(::AbstractChain, sample) end
+function initialize!(ch::AbstractChain, args...; kwargs) end
+function step!(ch::AbstractChain) end
+function pushsample!(ch::AbstractChain) end
+function drawsamples!(ch::AbstractChain) end
+function summarize(ch::AbstractChain) end
 
 # @concrete terse struct Chain{T} <: AbstractVector{T}
 #     samples     # :: AbstractVector{T}
@@ -16,18 +22,22 @@ function pushsample!(::AbstractChain, sample) end
 # end
 using MappedArrays
 
+export samples, meta, logp, logweights, info
+
 samples(ch::AbstractChain) = getfield(ch, :samples)
 meta(ch::AbstractChain) = getfield(ch, :meta)
 globals(ch::AbstractChain) = getfield(ch, :globals)
 logp(ch::AbstractChain) = getfield(ch, :logp)
 logweights(chain::AbstractChain) = mappedarray(_ -> 0.0, logp(chain))
+info(chain::AbstractChain) = getfield(chain, :info)
+samples(chain::AbstractChain) = getfield(chain, :samples)
+logp(chain::AbstractChain) = getfield(chain, :logp)
 
 Base.size(ch::AbstractChain) = size(samples(ch))
 
 Base.length(ch::AbstractChain) = length(samples(ch))
 
 Base.getindex(ch::AbstractChain, n) = getindex(samples(ch), n)
-
 
 
 Base.propertynames(ch::AbstractChain) = propertynames(samples(ch))
@@ -94,6 +104,7 @@ end
 # end
 
 function Base.resize!(ch::AbstractChain, n::Int)
-    resize!(samples(ch), n)
-    resize!(meta(ch), n)
+    for v in vectorfields(ch)
+        resize!(v, n)
+    end
 end
