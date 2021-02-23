@@ -14,7 +14,7 @@ function pushsample!(::AbstractChain, sample) end
 #     globals     # Metadata associated with the sample as a whole
 #     iter        # The sampling iterator, can be used to draw additional samples
 # end
-using MappedArray
+using MappedArrays
 
 samples(ch::AbstractChain) = getfield(ch, :samples)
 meta(ch::AbstractChain) = getfield(ch, :meta)
