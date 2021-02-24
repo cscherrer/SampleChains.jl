@@ -51,7 +51,7 @@ function Base.show(io::IO, s::RealSummary)
     if s.μ == 0 || σ == 0
         μdigits = 2
     else
-        μdigits = max(2, ceil(Int, log10(2) * (exponent(s.μ) - exponent(σ))) + 2)
+        μdigits = max(0, ceil(Int, log10(2) * (exponent(s.μ) - exponent(σ))) + 2)
     end
     μ = round(s.μ, sigdigits = μdigits)
     print(io, μ, "±", σ)
@@ -59,6 +59,6 @@ end
 
 summarize(x::AbstractVector{<:Real}) = RealSummary(mean_and_std(x)...)
 
-function summarize(x::ArrayOfSimilarArrays)
+function summarize(x::AbstractArray{<:AbstractArray{T}}) where {T <: Real}
     [RealSummary(μ,σ) for (μ,σ) in zip(mean_and_std(x)...)]
 end

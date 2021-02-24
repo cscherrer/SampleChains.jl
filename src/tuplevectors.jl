@@ -1,3 +1,6 @@
+using NestedTuples: modify
+import NestedTuples
+
 export TupleVector
 using ElasticArrays, ArraysOfArrays
 struct TupleVector{T,X} <: AbstractVector{T}
@@ -6,10 +9,7 @@ end
 
 # struct EmptyTupleVector{T} end
 
-export unwrap
-
-unwrap(tv::TupleVector) = getfield(tv, :data)
-unwrap(x) = x
+NestedTuples.unwrap(tv::TupleVector) = getfield(tv, :data)
 
 function TupleVector(a::AbstractVector{T}) where {T}
     a1 = first(a)
@@ -45,6 +45,8 @@ end
 # TupleVector{T}(x...) where {T} = leaf_setter(T)(x...)
 
 import Base
+
+NestedTuples.schema(tv::TupleVector{T}) where {T} = schema(T)
 
 Base.propertynames(tv::TupleVector) = propertynames(unwrap(tv))
 

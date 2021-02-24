@@ -3,6 +3,7 @@ export AbstractChain
 
 export samples, meta, logp, logweights, info, pushsample!
 export initialize!, step!, drawsamples!
+import Base
 
 abstract type AbstractChain{T} <: AbstractVector{T} end
 
@@ -13,7 +14,6 @@ function step!(ch::AbstractChain) end
 function drawsamples!(ch::AbstractChain) end
 
 using MappedArrays
-
 
 meta(ch::AbstractChain) = getfield(ch, :meta)
 globals(ch::AbstractChain) = getfield(ch, :globals)
@@ -29,7 +29,7 @@ Base.length(ch::AbstractChain) = length(samples(ch))
 Base.getindex(ch::AbstractChain, n) = getindex(samples(ch), n)
 
 
-Base.propertynames(ch::AbstractChain) = propertynames(samples(ch))
+Base.propertynames(ch::AbstractChain) = propertynames(first(samples(ch)))
 
 # TODO: Make this pass @code_warntype
 Base.getproperty(ch::AbstractChain, k::Symbol) = getproperty(samples(ch), k)
