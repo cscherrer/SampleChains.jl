@@ -6,9 +6,9 @@
 [![Coverage](https://codecov.io/gh/cscherrer/SampleChains.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/cscherrer/SampleChains.jl)
 
 ```julia
-julia> chain
-MultiChain with 4 Chains, 2000 total samples
-(σ = 1.0±1.1, α = 2.2±39.0, β = [0.047±0.97, 0.023±1.0, 0.062±1.0, -0.015±0.99, 0.033±1.0])
+julia> chains
+3003-element MultiChain with 3 chains and schema (σ = Float64, α = Float64, β = Vector{Float64})
+(σ = 0.9±0.88, α = -5.1±10.0, β = [-0.0±0.9, 0.04±0.99, 0.04±1.1, 0.02±0.92, 0.06±0.95])
 ```
 
 Some features (many still in progress):
@@ -19,3 +19,12 @@ Some features (many still in progress):
 - Built on [ElasticArrays](https://github.com/JuliaArrays/ElasticArrays.jl) to make it easy to add new samples after the fact
 - Adaptable to many different sampling algorithms, including with or without (log-)weights
 - Easy summarization functions: expectations per-dimension quantiles, etc
+
+In progress:
+- More back-ends (currently just DynamicHMC, using [SampleChainsDynamicHMC](https://github.com/cscherrer/SampleChainsDynamicHMC.jl)
+- Diagnostic warnings during sampling
+- Callbacks for plotting, etc
+- Sample count based on desired standard error of a specified expected value
+- Summarization by different functions
+    - Highest posterior density intervals
+    - R-hat statistics
