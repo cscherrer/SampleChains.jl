@@ -21,7 +21,7 @@ Some features (many still in progress):
 - Easy summarization functions: expectations per-dimension quantiles, etc
 
 In progress:
-- More back-ends (currently just DynamicHMC, using [SampleChainsDynamicHMC](https://github.com/cscherrer/SampleChainsDynamicHMC.jl)
+- More back-ends (currently just DynamicHMC, using [SampleChainsDynamicHMC](https://github.com/cscherrer/SampleChainsDynamicHMC.jl))
 - Diagnostic warnings during sampling
 - Callbacks for plotting, etc
 - Sample count based on desired standard error of a specified expected value
