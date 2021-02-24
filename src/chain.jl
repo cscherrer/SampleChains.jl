@@ -7,11 +7,44 @@ import Base
 
 abstract type AbstractChain{T} <: AbstractVector{T} end
 
+"""
+    resizablefields(c::AbstractChain) -> Tuple{Symbol}
+
+Return a tuple of the fieldnames `s` for which `getfield(c, s)` is a vector
+which one element for each sample. 
+"""
 function resizablefields(::AbstractChain) end
+
+"""
+    function pushsample!(::AbstractChain, sample...) -> AbstractChain
+
+Push a new sample to the chain. This is not `push!` because the sample may be
+represented across multiple arguments.
+"""
 function pushsample!(::AbstractChain, sample) end
-function initialize!(ch::AbstractChain, args...; kwargs) end
+
+"""
+    initialize!(C::Type{<:AbstractChain}, args...) -> C
+
+Initialize a new chain of type C.
+"""
+function initialize!(C::Type{<:AbstractChain}, args...) end
+
+"""
+    step!(ch::AbstractChain)
+
+Take a single step in the chain, returning the next sample. The return type
+depends on AbstractChain subtype. The only change in the chain `ch` is the
+iterator state; the samples are unchanged.
+"""
 function step!(ch::AbstractChain) end
-function drawsamples!(ch::AbstractChain) end
+
+"""
+    drawsamples!(ch::AbstractChain, n::Int)
+
+Draw `n` samples from the chain `ch` and append them.
+"""
+function drawsamples!(ch::AbstractChain, n::Int) end
 
 using MappedArrays
 
