@@ -46,13 +46,37 @@ Draw `n` samples from the chain `ch` and append them.
 """
 function drawsamples!(ch::AbstractChain, n::Int) end
 
+"""
+    getlogdensity(ch::AbstractChain{T})
+
+Get the log-density function the samples are drawn from. Returns a `T -> Real`
+function. 
+"""
+function getlogdensity(chain::AbstractChain) end
+
 using MappedArrays
 
 meta(ch::AbstractChain) = getfield(ch, :meta)
 globals(ch::AbstractChain) = getfield(ch, :globals)
 logweights(chain::AbstractChain) = mappedarray(_ -> 0.0, logp(chain))
 info(chain::AbstractChain) = getfield(chain, :info)
+
+"""
+    samples(chain::AbstractChain{T}) -> AbstractVector{T}
+
+Return a vector of the samples in the chain.
+"""
 samples(chain::AbstractChain) = getfield(chain, :samples)
+
+
+
+"""
+    logp(chain::AbstractChain) -> AbstractVector{AbstractFloat}
+
+Return a vector of the log-densities of the sampled chain. Should satisfy
+
+    logp(chain) == getlogdensity(chain).(samples(chain))
+"""
 logp(chain::AbstractChain) = getfield(chain, :logp)
 
 Base.size(ch::AbstractChain) = size(samples(ch))
