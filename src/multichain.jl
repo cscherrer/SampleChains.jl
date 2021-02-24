@@ -6,11 +6,11 @@ struct MultiChain{T} <: AbstractVector{T}
 end
 
 
-export chains
+export getchains
 
 Base.size(mc::MultiChain) = size(samples(mc))
 
-chains(mc::MultiChain) = getfield(mc, :chains)
+getchains(mc::MultiChain) = getfield(mc, :chains)
 
 function Base.getindex(mc::MultiChain, n::Int)
     getindex(samples(mc), n)
@@ -18,7 +18,7 @@ end
 
 Base.propertynames(mc::MultiChain) = propertynames(first(samples(mc)))
 
-Base.getproperty(mc::MultiChain, p::Symbol) = ApplyArray(vcat, getproperty.(chains(mc), p)...)
+Base.getproperty(mc::MultiChain, p::Symbol) = ApplyArray(vcat, getproperty.(getchains(mc), p)...)
 
 MultiChain(chains::AbstractChain...) = MultiChain([chains...])
 
@@ -34,7 +34,7 @@ end
 
 
 function samples(mc::MultiChain{T}) where {T}
-    chs = chains(mc)
+    chs = getchains(mc)
     nt = deepcopy(unwrap(samples(first(chs))))
     for lens in lenses(nt)
         vecs = (lens(unwrap(ch)) for ch in chs)
@@ -45,7 +45,7 @@ end
 
 function Base.showarg(io::IO, mc::MultiChain{T}, toplevel) where T
     io = IOContext(io, :compact => true)
-    numchains = length(chains(mc))
+    numchains = length(getchains(mc))
     print(io, "MultiChain")
     if toplevel 
         println(io, " with $numchains chains and schema ", schema(T))
