@@ -107,3 +107,5 @@ function Base.resize!(ch::AbstractChain, n::Int)
         resize!(v, n)
     end
 end
+
+NestedTuples.rmap(f, ch::AbstractChain) = rmap(f, samples(ch))

@@ -1,6 +1,7 @@
 using NestedTuples: modify
 import NestedTuples
 
+export rmap
 export TupleVector
 using ElasticArrays, ArraysOfArrays
 struct TupleVector{T,X} <: AbstractVector{T}
@@ -122,6 +123,10 @@ NestedTuples.flatten(tv::TupleVector) = TupleVector(flatten(unwrap(tv)))
 #     X = typeof(data)
 #     TupleVector{T,X}(data)
 # end
+
+function NestedTuples.rmap(f, tv::TupleVector)
+    return rmap(f, unwrap(tv))
+end
 
 function Base.resize!(tv::TupleVector, n::Int)
     rmap(x -> resize!(x, n), unwrap(tv))

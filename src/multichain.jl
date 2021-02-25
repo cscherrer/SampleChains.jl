@@ -56,3 +56,5 @@ function Base.show(io::IO, ::MIME"text/plain", mc::MultiChain)
     summary(io, mc)
     print(io, summarize(mc))
 end
+
+NestedTuples.rmap(f, mc::MultiChain) = rmap.(f, getchains(mc))
