@@ -30,8 +30,19 @@ function summarize(mc::MultiChain)
     summarize(samples(mc))
 end
 
+function initialize!(nchains::Int, T::Type{<:AbstractChain}, args...)
+    chains = T[initialize!(T, args...) for n in 1:nchains]
+    return MultiChain(chains...)
+end
 
-
+function drawsamples!(chains::MultiChain, n::Int)
+    rawchains = getchains(chains)
+    for i in 1:length(rawchains)
+        drawsamples!(rawchains[i], n)
+    end
+    
+    return chains
+end
 
 function samples(mc::MultiChain{T}) where {T}
     chs = getchains(mc)
