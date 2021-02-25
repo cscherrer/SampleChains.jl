@@ -35,9 +35,15 @@ end
 
 function samples(mc::MultiChain{T}) where {T}
     chs = getchains(mc)
-    nt = deepcopy(unwrap(samples(first(chs))))
+    # Get the appropriate NamedTuple to use as a template
+    nt = unwrap(samples(first(chs)))
+
+    # For each leaf of our template, ...
     for lens in lenses(nt)
+        # Get the corresponding leaves of the chains...
         vecs = (lens(unwrap(ch)) for ch in chs)
+
+        # and concatenate them.
         nt = set(nt, lens, ApplyArray(vcat, vecs...))
     end
     return TupleVector{T, typeof(nt)}(nt)
