@@ -38,6 +38,11 @@ macro cleanbreak(ex)
 end
 
 """
+    chainvec(x)
+
+Return a vector used to store [x] in a SampleChain.
+
+Note that `x` should correspond to information stored in a single sample.
 """
 function chainvec end
 
