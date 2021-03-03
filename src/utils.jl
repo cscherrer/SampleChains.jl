@@ -36,3 +36,11 @@ macro cleanbreak(ex)
         end
     end 
 end
+
+chainvec(nt::NamedTuple) = TupleVector([nt])
+chainvec(x::Real) = ElasticVector([x])
+
+function chainvec(x::T)
+    isstructtype(T) && return ElasticVector(StructArray([x]))
+    return ElasticVector([x])
+end
