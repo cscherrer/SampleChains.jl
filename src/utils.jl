@@ -1,7 +1,7 @@
 using MCMCDiagnostics
 export expect
 using Measurements
-using StructArrays: StructVector
+using StructArrays
 
 # Expected value of x log-weighted by ℓ
 function expect(ℓ,x)
@@ -64,7 +64,7 @@ end
 
 function chainvec(x::T, n=1) where {T}
     if isstructtype(T)
-        v = replace_storage(ElasticVector, StructVector{T}(undef, n))
+        v = StructArrays.replace_storage(ElasticVector, StructVector{T}(undef, n))
         @inbounds v[1] = x
         return v
     end

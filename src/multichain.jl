@@ -1,5 +1,7 @@
 using LazyArrays: ApplyArray
 using Accessors: set
+using Random
+
 export MultiChain
 struct MultiChain{T} <: AbstractVector{T}
     chains
@@ -30,9 +32,14 @@ function summarize(mc::MultiChain)
     summarize(samples(mc))
 end
 
-function initialize!(nchains::Int, T::Type{<:AbstractChain}, args...)
-    chains = T[initialize!(T, args...) for n in 1:nchains]
+function initialize!(rng, nchains::Int, T::Type{<:AbstractChain}, args...)
+    chains = T[initialize!(rng, T, args...) for n in 1:nchains]
     return MultiChain(chains...)
+end
+
+
+function initialize!(nchains::Int, T::Type{<:AbstractChain}, args...)
+    initialize!(Random.GLOBAL_RNG, nchains, T, args...)
 end
 
 function drawsamples!(chains::MultiChain, n::Int)

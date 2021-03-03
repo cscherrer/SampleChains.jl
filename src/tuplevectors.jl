@@ -12,6 +12,11 @@ end
 
 NestedTuples.unwrap(tv::TupleVector) = getfield(tv, :data)
 
+function TupleVector(data::X) where {X <: NamedTuple}
+    T = typeof(rmap(first, data))
+    return TupleVector{T,X}(data)
+end
+
 function TupleVector(a::AbstractVector{T}) where {T}
     a1 = first(a)
 
