@@ -1,7 +1,7 @@
 
 export AbstractChain
 
-export samples, meta, logp, logweights, info, pushsample!
+export samples, meta, logq, logw, info, pushsample!
 export initialize!, step!, drawsamples!
 import Base
 
@@ -58,7 +58,7 @@ using MappedArrays
 
 meta(ch::AbstractChain) = getfield(ch, :meta)
 globals(ch::AbstractChain) = getfield(ch, :globals)
-logweights(chain::AbstractChain) = mappedarray(_ -> 0.0, logp(chain))
+logw(chain::AbstractChain) = mappedarray(_ -> 0.0, logq(chain))
 info(chain::AbstractChain) = getfield(chain, :info)
 
 """
@@ -71,13 +71,13 @@ samples(chain::AbstractChain) = getfield(chain, :samples)
 
 
 """
-    logp(chain::AbstractChain) -> AbstractVector{AbstractFloat}
+    logq(chain::AbstractChain) -> AbstractVector{AbstractFloat}
 
 Return a vector of the log-densities of the sampled chain. Should satisfy
 
-    logp(chain) == getlogdensity(chain).(samples(chain))
+    logq(chain) == getlogdensity(chain).(samples(chain))
 """
-logp(chain::AbstractChain) = getfield(chain, :logp)
+logq(chain::AbstractChain) = getfield(chain, :logq)
 
 Base.size(ch::AbstractChain) = size(samples(ch))
 
