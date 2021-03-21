@@ -102,6 +102,11 @@ function Base.show(io::IO, ::MIME"text/plain", chain::AbstractChain)
     print(io, summarize(chain))
 end
 
+function Base.show(io::IO, ::MIME"text/html", chain::AbstractChain)
+    summary(io, chain)
+    print(io, summarize(chain))
+end
+
 function Base.resize!(ch::AbstractChain, n::Int)
     for v in resizablefields(ch)
         resize!(v, n)
