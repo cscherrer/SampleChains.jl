@@ -67,6 +67,11 @@ function Base.show(io::IO, ::MIME"text/plain", tv::TupleVector)
     print(io, summarize(tv))
 end
 
+function Base.show(io::IO, ::MIME"text/html", tv::TupleVector)
+    summary(io, tv)
+    print(io, summarize(tv))
+end
+
 function Base.getindex(x::TupleVector, j)
         
     # TODO: Bounds checking doesn't affect performance, am I doing it right?
