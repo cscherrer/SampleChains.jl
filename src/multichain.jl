@@ -28,7 +28,7 @@ function MultiChain(chains::Vector{<:AbstractChain{T}}) where {T}
     return MultiChain{T}(chains)
 end
 
-function summarize(mc::MultiChain)
+function TupleVectors.summarize(mc::MultiChain)
     summarize(samples(mc))
 end
 
