@@ -32,14 +32,14 @@ function TupleVectors.summarize(mc::MultiChain)
     summarize(samples(mc))
 end
 
-function initialize!(rng, nchains::Int, config::ChainConfig{T}, args...) where {T}
-    chains = T[initialize!(rng, config, args...) for n in 1:nchains]
+function newchain(rng, nchains::Int, config::ChainConfig{T}, args...) where {T}
+    chains = T[newchain(rng, config, args...) for n in 1:nchains]
     return MultiChain(chains...)
 end
 
 
-function initialize!(nchains::Int, config::ChainConfig{T}, args...) where {T}
-    initialize!(Random.GLOBAL_RNG, nchains, config, args...)
+function newchain(nchains::Int, config::ChainConfig{T}, args...) where {T}
+    newchain(Random.GLOBAL_RNG, nchains, config, args...)
 end
 
 function sample!(chains::MultiChain, n::Int)

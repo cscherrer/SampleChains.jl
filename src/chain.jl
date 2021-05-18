@@ -2,7 +2,7 @@
 export AbstractChain
 export ChainConfig
 export samples, meta, logq, logw, info, pushsample!
-export initialize!, step!, sample!
+export newchain, step!, sample!
 import Base
 
 abstract type AbstractChain{T} <: AbstractVector{T} end
@@ -23,14 +23,14 @@ function resizablefields(::AbstractChain) end
 Push a new sample to the chain. This is not `push!` because the sample may be
 represented across multiple arguments.
 """
-function pushsample!(::AbstractChain, sample) end
+function pushsample!(::AbstractChain, sample...) end
 
 """
-    initialize!(config::ChainConfig{T}, args...) -> C
+    newchain(config::ChainConfig{T}, args...) -> C
 
 Initialize a new chain of type C.
 """
-function initialize!(config::ChainConfig, args...) end
+function newchain(config::ChainConfig, args...) end
 
 """
     step!(ch::AbstractChain)
