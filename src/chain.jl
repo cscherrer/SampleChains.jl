@@ -1,6 +1,6 @@
 
 export AbstractChain
-
+export ChainConfig
 export samples, meta, logq, logw, info, pushsample!
 export initialize!, step!, sample!
 import Base
