@@ -1,11 +1,13 @@
 
 export AbstractChain
-
+export ChainConfig
 export samples, meta, logq, logw, info, pushsample!
-export initialize!, step!, drawsamples!
+export newchain, step!, sample!
 import Base
 
 abstract type AbstractChain{T} <: AbstractVector{T} end
+
+abstract type ChainConfig{T} end
 
 """
     resizablefields(c::AbstractChain) -> Tuple{Symbol}
@@ -21,14 +23,14 @@ function resizablefields(::AbstractChain) end
 Push a new sample to the chain. This is not `push!` because the sample may be
 represented across multiple arguments.
 """
-function pushsample!(::AbstractChain, sample) end
+function pushsample!(::AbstractChain, sample...) end
 
 """
-    initialize!(C::Type{<:AbstractChain}, args...) -> C
+    newchain(config::ChainConfig{T}, args...) -> C
 
 Initialize a new chain of type C.
 """
-function initialize!(C::Type{<:AbstractChain}, args...) end
+function newchain(config::ChainConfig, args...) end
 
 """
     step!(ch::AbstractChain)
@@ -40,11 +42,11 @@ iterator state; the samples are unchanged.
 function step!(ch::AbstractChain) end
 
 """
-    drawsamples!(ch::AbstractChain, n::Int)
+    sample!(ch::AbstractChain, n::Int)
 
 Draw `n` samples from the chain `ch` and append them.
 """
-function drawsamples!(ch::AbstractChain, n::Int) end
+function sample!(ch::AbstractChain, n::Int) end
 
 """
     getlogdensity(ch::AbstractChain{T})

@@ -1,7 +1,8 @@
 using MCMCDiagnostics
-export expect
 using Measurements
-using StructArrays
+import StatsBase: mean_and_std
+
+export expect
 
 # Expected value of x log-weighted by ℓ
 function expect(ℓ,x)

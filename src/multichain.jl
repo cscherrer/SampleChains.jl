@@ -32,20 +32,20 @@ function TupleVectors.summarize(mc::MultiChain)
     summarize(samples(mc))
 end
 
-function initialize!(rng, nchains::Int, T::Type{<:AbstractChain}, args...)
-    chains = T[initialize!(rng, T, args...) for n in 1:nchains]
+function newchain(rng, nchains::Int, config::ChainConfig{T}, args...) where {T}
+    chains = T[newchain(rng, config, args...) for n in 1:nchains]
     return MultiChain(chains...)
 end
 
 
-function initialize!(nchains::Int, T::Type{<:AbstractChain}, args...)
-    initialize!(Random.GLOBAL_RNG, nchains, T, args...)
+function newchain(nchains::Int, config::ChainConfig{T}, args...) where {T}
+    newchain(Random.GLOBAL_RNG, nchains, config, args...)
 end
 
-function drawsamples!(chains::MultiChain, n::Int)
+function sample!(chains::MultiChain, n::Int)
     rawchains = getchains(chains)
     for i in 1:length(rawchains)
-        drawsamples!(rawchains[i], n)
+        sample!(rawchains[i], n)
     end
     
     return chains
