@@ -30,7 +30,7 @@ function pushsample!(::AbstractChain, sample) end
 
 Initialize a new chain of type C.
 """
-function initialize!(config::ChainConfig{T}, args...) end
+function initialize!(config::ChainConfig, args...) end
 
 """
     step!(ch::AbstractChain)
