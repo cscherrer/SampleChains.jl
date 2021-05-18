@@ -2,7 +2,7 @@
 export AbstractChain
 
 export samples, meta, logq, logw, info, pushsample!
-export initialize!, step!, drawsamples!
+export initialize!, step!, sample!
 import Base
 
 abstract type AbstractChain{T} <: AbstractVector{T} end
@@ -42,11 +42,11 @@ iterator state; the samples are unchanged.
 function step!(ch::AbstractChain) end
 
 """
-    drawsamples!(ch::AbstractChain, n::Int)
+    sample!(ch::AbstractChain, n::Int)
 
 Draw `n` samples from the chain `ch` and append them.
 """
-function drawsamples!(ch::AbstractChain, n::Int) end
+function sample!(ch::AbstractChain, n::Int) end
 
 """
     getlogdensity(ch::AbstractChain{T})

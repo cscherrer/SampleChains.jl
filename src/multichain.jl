@@ -42,10 +42,10 @@ function initialize!(nchains::Int, config::ChainConfig{T}, args...) where {T}
     initialize!(Random.GLOBAL_RNG, nchains, config, args...)
 end
 
-function drawsamples!(chains::MultiChain, n::Int)
+function sample!(chains::MultiChain, n::Int)
     rawchains = getchains(chains)
     for i in 1:length(rawchains)
-        drawsamples!(rawchains[i], n)
+        sample!(rawchains[i], n)
     end
     
     return chains
