@@ -7,6 +7,8 @@ import Base
 
 abstract type AbstractChain{T} <: AbstractVector{T} end
 
+abstract type ChainConfig{T} end
+
 """
     resizablefields(c::AbstractChain) -> Tuple{Symbol}
 
@@ -24,11 +26,11 @@ represented across multiple arguments.
 function pushsample!(::AbstractChain, sample) end
 
 """
-    initialize!(C::Type{<:AbstractChain}, args...) -> C
+    initialize!(config::ChainConfig{T}, args...) -> C
 
 Initialize a new chain of type C.
 """
-function initialize!(C::Type{<:AbstractChain}, args...) end
+function initialize!(config::ChainConfig{T}, args...) end
 
 """
     step!(ch::AbstractChain)
