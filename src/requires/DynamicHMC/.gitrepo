@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:cscherrer/SampleChainsDynamicHMC.jl.git
+	branch = master
+	commit = 03c7b924342945717bb269246b1a81b5946ffd2c
+	parent = 3c4961724e55fbd046e73d1e085c2bca3c9895da
+	method = merge
+	cmdver = 0.4.3
