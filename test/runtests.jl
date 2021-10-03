@@ -1,6 +1,7 @@
 using SampleChains
+using SampleChainsDynamicHMC
 using Test
 
 @testset "SampleChains.jl" begin
-    # Write your tests here.
+    include("../dev/SampleChainsDynamicHMC/test/runtests.jl")
 end
