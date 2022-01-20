@@ -16,7 +16,7 @@ TupleVectors = "615932cf-77b6-4358-adcd-5b7eba981d7e"
 
 [compat]
 Accessors = "0.1"
-LazyArrays = "0.16,0.17,0.18,0.19,0.20,0.21"
+LazyArrays = "0.20,0.21,0.22"
 MCMCDiagnostics = "0.3"
 MappedArrays = "0.3,0.4"
 Measurements = "2.5"
